@@ -24,6 +24,6 @@ def Navbar():
               dbc.NavItem(dbc.NavLink("Room Type Analysis", href="/room_type",className="navbar-brand")),
             ],
           pills=True,
-          className="navbar navbar-expand-lg navbar-dark bg-primary",
+          className="navbar navbar-expand-lg navbar-light bg-light",
         )
     return navbar

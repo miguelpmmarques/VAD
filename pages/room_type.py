@@ -41,19 +41,19 @@ def RoomTypepage(app,vis):
     list_neighbours = vis.all_neighbours
     ''' DASH '''
     #app = dash.Dash(__name__, external_stylesheets = [dbc.themes.UNITED])
-
-
+    feature_list = ["price","minimum_nights","number_of_reviews","review_scores_rating"]
 
     body = html.Div([
-        html.H1("Porto's Airbnbs Analysis"),
+        html.H1("Room Type Analysis"),
         dcc.Dropdown(
             id="dropdownRT",
             options=[
                 {'label': x.replace("_"," ").capitalize(), 'value': x} for x in list_neighbours
-                
             ],
         value=group,
-        clearable=False,),
+        clearable=False,
+        style={"max-width":"20vw","margin-left":"1vw"},
+        ),
         html.Div(
             className="row",
             children=[
@@ -73,7 +73,36 @@ def RoomTypepage(app,vis):
                 )
             ]
         ),
-        #dcc.Graph(id="Pie",figure = vis.pie_vizualization(group,feature)),
+        html.Div(
+            className="row",
+            children=[
+                html.Div(
+                    className="six columns",
+                    children=[
+
+                        html.H5("Features",style={"margin-left":"2vw","font-weight": "bold"}),
+                        dcc.RadioItems(
+                            id = 'radio_items_room_type',
+                            options=
+                                [{"label":f.replace("_"," ").capitalize(),"value":f} for f in feature_list],
+                        
+                            value='price',
+                            style={"margin-left":"2vw","display":"inline-grid","padding":"1vw"}
+                        ),
+                    ]
+                ),
+                html.Div(
+                    className="six columns",
+                    children=html.Div(
+                        dcc.Graph(id="Bar",figure = vis.bar_room_type_visualization(group,feature),
+                        style={'width': '100vh', 'height': '40vh',"padding-left": "4vw"},
+                        ),
+
+                    )
+                )
+            ]
+        ),
+        
         #dcc.Graph(id="Hist",figure = vis.hist_vizualization(group,feature)),
     ])    
 

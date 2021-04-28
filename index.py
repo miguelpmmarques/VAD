@@ -1,3 +1,4 @@
+# danielgasper2006@hotmail.com 
 
 import dash
 import dash_core_components as dcc
@@ -33,7 +34,7 @@ group_analyse = "PORTO"
 #app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 app = dash.Dash(
     __name__,
-    external_stylesheets=['https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/flatly/bootstrap.min.css']
+    external_stylesheets=['https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/united/bootstrap.min.css']
 )
 app.config.suppress_callback_exceptions = True
 
@@ -62,12 +63,14 @@ def display_page(pathname):
 @app.callback(
     Output("Pie", "figure"),
     Output("Hist", "figure"),
-    Input("dropdownRT", "value")
+    Output("Bar", "figure"),
+    Input("dropdownRT", "value"),
+    Input("radio_items_room_type", "value"),
+    
 )
-def change_group(group):
-    feature = "price"
+def change_group(group,feature):
     print("Choice "+group)
-    return vis.pie_vizualization(group,feature),vis.hist_vizualization(group,feature)
+    return vis.pie_vizualization(group,feature),vis.hist_vizualization(group,feature),vis.bar_room_type_visualization(group,feature)
 
 # Neighbourhood Callbacks
 

@@ -51,14 +51,14 @@ def Homepage(app,vis):
                 #[dbc.Button(n.capitalize(),href="/"+n,className="btn btn-primary") for n in list_neighbours]+[html.Div(id='container-button-timestamp')]
                 children=[
                     dbc.Card([
-                        dbc.CardHeader(dcc.Link(n.capitalize(),href="/"+n,style={"color":"white"})), 
+                        dbc.CardHeader(dcc.Link(n.capitalize(),href="/"+n,style={"color":"black"}),
+                        style={"border-radius":"25%","height": "4vw"}), 
                         dbc.CardBody([
                             html.P("{} Airbnbs".format(count_neighbourhoods[n])),
                             html.P("{}%".format(count_neighbourhoods_percentage[n]),style={'fontWeight': 'bold'}),
                         ])
                     ],
-                    
-                    className="card text-white bg-primary mb-1",
+                    className="card border-danger mb-3",
                     style={"margin-left":"1vw","width":"10vw","heigh":"10vw","border-radius":"15%"}
                     ) for n in list_neighbours],
                 style={"max-width": "100vw","text-align":"center","display":"flex","flex-direction":"row"},
@@ -72,7 +72,7 @@ def Homepage(app,vis):
                 html.Div(className="two columns",
                     children=[
                         html.H4("Features:",
-                        style={"margin-left":"2vw"},
+                        style={"margin-left":"2vw","font-weight": "bold"},
                         
                         ),
                         html.Div(className="column",
@@ -106,19 +106,20 @@ def Homepage(app,vis):
                     className="five columns",
                     children=html.Div(
                         children=dcc.Graph(id="MainMap",figure = vis.main_visualization_map(feature),
-                        style={'width': '80vh', 'height': '90vh'}
+                        style={'width': '80vh', 'height': '70vh'}
                         ),
                     ),
-                    style={"heigh":"90vw"}
+                    style={"heigh":"70vw"}
 
                 ),
                 html.Div(
                     className="five columns",
                     children=html.Div(
                             children=dcc.Graph(id="ScatterMap",figure = vis.main_visualization_list(feature),
-                            style={'width': '80vh', 'height': '90vh'}
+                            style={'width': '80vh', 'height': '70vh'}
                             ),
                         ),
+                    style={"heigh":"70vw"}
                 ),
             ],
         ),

@@ -209,70 +209,9 @@ class VisualizationAirbnb:
         fig2.update_layout(barmode='group', title_text="Mean beds, bathrooms and accommodates per Room Types in {}".format(group))
         return fig2
  
-        
 
-    def _map_pie_hist_vizualization_code(self,group,feature):
-        
-        neighbourhood_in_group = self.Airbnb_complete[self.Airbnb_complete["neighbourhood_group"]==group].groupby("neighbourhood").mean().reset_index()
-        neighbourhood_in_group["Number of Airbnbs"]=list(self.Airbnb_complete[self.Airbnb_complete["neighbourhood_group"]==group].groupby("neighbourhood").count()["id"])
-        json_info = self._get_info_from_json(group)
 
-        fig0 = px.choropleth_mapbox(neighbourhood_in_group, geojson=self.geojson_airbnb,
-                                color_continuous_scale = "OrRd",
-                                locations="neighbourhood", featureidkey="properties.neighbourhood",
-                                center={"lat": json_info["lat"], "lon": json_info["lon"]},
-                                hover_data = ["Number of Airbnbs"],
-                                mapbox_style="carto-positron", zoom=json_info["zoom"],
-                                color = feature,
-                                title="Mean Airbnb {} per Neighbourhood".format(feature))
-        fig0.show()
-        
-        
-        # Pie
-        to_pie = self.Airbnb_complete[self.Airbnb_complete["neighbourhood_group"] == group].groupby(["room_type"]).count()[["id"]].reset_index()
-        go_pie = go.Pie(labels=to_pie["room_type"], values=to_pie["id"],
-                name=group,
-                hole=0.4,
-                #text = acro,
-                textinfo='percent+label',
-
-        )
-        fig1 = go.Figure(
-            data = go_pie
-        )
-        fig1.update_layout(annotations=[
-            dict(text=go_pie.name, showarrow=False,font_size=20-int(len(go_pie.name)/2))]
-        )
-        fig1.update_traces(marker=dict(colors=px.colors.sequential.RdBu,
-                                line=dict(color='#FFFFFF', width=5)))
-        fig1.update_layout(title_text="Room Types in {}".format(group))
-        fig1.show()
-
-        # Hist
-        info = self.Airbnb_complete[self.Airbnb_complete["neighbourhood_group"] == group].groupby(["room_type"]).mean().reset_index()
-        info_filtered = info[["room_type","bathrooms","beds","accommodates"]]
-        fig2 = go.Figure()
-        fig2.add_trace(go.Bar(
-            x=info_filtered["room_type"],
-            y=info_filtered["bathrooms"],
-            name='Number of bathrooms',
-            marker_color=px.colors.sequential.RdBu[0]
-        ))
-        fig2.add_trace(go.Bar(
-            x=info_filtered["room_type"],
-            y=info_filtered["beds"],
-            name='Number of beds',
-            marker_color=px.colors.sequential.RdBu[1]
-        ))
-        fig2.add_trace(go.Bar(
-            x=info_filtered["room_type"],
-            y=info_filtered["accommodates"],
-            name='How many people can accommodate',
-            marker_color=px.colors.sequential.RdBu[2]
-        ))
-        fig2.update_layout(barmode='group', title_text="Mean beds, bathrooms and accommodates per Room Types in {}".format(group))
-        fig2.show()
- 
+    
     # Public
 
     def main_visualization_map(self,feature,detailed=False):
@@ -281,9 +220,9 @@ class VisualizationAirbnb:
     def main_visualization_list(self,feature,detailed=False):
        
         if detailed:
-            sorted_list = self.Airbnb_complete.groupby("neighbourhood").mean()[feature].sort_values(ascending=False)
+            sorted_list = self.Airbnb_complete.groupby("neighbourhood").mean()[feature].sort_values(ascending=True)
         else:
-            sorted_list = self.main_visualization.groupby("neighbourhood_group").mean()[feature].sort_values(ascending=False)
+            sorted_list = self.main_visualization.groupby("neighbourhood_group").mean()[feature].sort_values(ascending=True)
         to_plot =  np.array(list(zip(sorted_list.index,sorted_list)))
         fig = go.Figure(go.Bar(
             y=to_plot[:,0],
@@ -295,6 +234,18 @@ class VisualizationAirbnb:
                 #line=dict(color='rgba(58, 71, 80, 1.0)', width=3)
             )
         ))
+        return fig
+
+    def bar_room_type_visualization(self,group,feature):
+        large_rockwell_template = dict(layout=go.Layout(title_font=dict(family="Rockwell", size=24)))
+        to_pie = self.Airbnb_complete[self.Airbnb_complete["neighbourhood_group"] == group].groupby(["room_type"]).mean().reset_index()
+
+        fig = go.Figure(data=[go.Bar(x=to_pie['room_type'], y=to_pie[feature])])
+        # Customize aspect
+        fig.update_traces(marker_color='rgb(233,84,32)', marker_line_color='rgb(255,0,0)',
+                        marker_line_width=3, opacity=0.8)
+        fig.update_layout(title_text='Room Type mean {} in {}'.format(feature.replace("_"," ").capitalize(),group),
+                        template = large_rockwell_template)
         return fig
     
     def time_series_individual(self,neighbourhood,feature,analisys):
