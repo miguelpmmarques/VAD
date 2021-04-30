@@ -48,7 +48,7 @@ def Homepage(app,vis):
         html.Br(),
         html.Div(className="row",
             children=[html.Div(className="container",
-                #[dbc.Button(n.capitalize(),href="/"+n,className="btn btn-primary") for n in list_neighbours]+[html.Div(id='container-button-timestamp')]
+                # [dbc.Button(n.capitalize(),href="/"+n,className="btn btn-primary") for n in list_neighbours]+[html.Div(id='container-button-timestamp')]
                 children=[
                     dbc.Card([
                         dbc.CardHeader(dcc.Link(n.capitalize(),href="/"+n,style={"color":"black"}),
@@ -123,9 +123,6 @@ def Homepage(app,vis):
                 ),
             ],
         ),
-        #dcc.Graph(id="MainMap",figure = vis.main_visualization_map(feature),
-        #style={"max-width":"60vw"}),
-        #dcc.Graph(id="ScatterMap",figure = vis.main_visualization_list(feature)),
     ])    
 
         
@@ -135,10 +132,3 @@ def Homepage(app,vis):
     ])
 
     return layout
-
-
-#vis.group_visualization_map("GONDOMAR","price")
-#vis.pie_by_group_visualization("PORTO")
-#vis.time_series_individual('Campanhã','price','mean')
-#vis.map_pie_hist_vizualization("GONDOMAR","price")
-

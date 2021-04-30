@@ -39,25 +39,74 @@ def Neighbourhoodpage(app,vis,group):
     feature = "price"
     features = ["price","minimum_nights","bathrooms","beds","accommodates","review_scores_rating"]
     list_neighbours = vis.all_neighbours
+    neighbourhoods = list(vis.Airbnb_complete[vis.Airbnb_complete["neighbourhood_group"]==group]["neighbourhood"].unique())
     analysis = "mean"
-    ''' DASH '''
+    feature_list = ["price","minimum_nights"]
 
+    ''' DASH '''
 
     print(group,feature)
     body = html.Div([
-        html.H1("{}'s Neighbourhood Airbnbs Analysis".format(group.capitalize())),
-        dcc.Dropdown(
-            id="dropdownN",
-            options=[
-                {'label': x.replace("_"," ").capitalize(), 'value': x} for x in features
-                
-            ],
-        value=feature,
-        clearable=False,),
+        html.H1("{}'s Neighbourhood Group Airbnbs Analysis".format(group.capitalize())),
+        
         html.Div(
-            [dbc.Button(n.capitalize(),href="/"+n) for n in list_neighbours]+[html.Div(id='container-button-timestamp')]),
-        dcc.Graph(id="Map",figure = vis.map_vizualization(group,feature)),
-        dcc.Graph(id="TimeSeries",figure = vis.time_series_individual(group,feature,analysis)),
+            className="row",
+            children=[
+                html.Div(className="six columns",
+                    children=[
+                            html.H5("Features",style={"margin-left":"2vw","font-weight": "bold"}),                        dcc.Dropdown(
+                            id="dropdownN",
+                            options=[
+                                {'label': x.replace("_"," ").capitalize(), 'value': x} for x in features    
+                            ],
+                            value=feature,
+                            clearable=False,
+                            style={"max-width":"10vw","margin-left":"1vw"},
+                        ),
+                        dcc.Graph(id="Map",figure = vis.map_vizualization(group,feature),
+                        style={"width":"49vw","margin-left":"1vw"}),
+                    ]
+                ),
+                html.Div(className="six columns",
+                    children=[
+                        html.H5("Neighbourhoods in {}".format(group.capitalize()),style={"margin-left":"2vw","font-weight": "bold"}),
+                        dcc.Dropdown(
+                            id="dropdownNeigh",
+                            options=[
+                                {'label': x.replace("_"," ").capitalize(), 'value': x} for x in neighbourhoods    
+                            ],
+                            value=neighbourhoods[0],
+                            clearable=False,
+                            style={"max-width":"30vw","margin-left":"1vw"},
+                        ),
+                        html.Br(),
+                        html.Div(
+                            className="row",
+                            children=[
+                                html.P("Features",style={"margin-left":"2vw","font-weight": "bold"}),
+                                dcc.RadioItems(
+                                    id = 'radio_items_room_type',
+                                    options=
+                                        [{"label":f.replace("_"," ").capitalize(),"value":f} for f in feature_list],
+                                
+                                    value='price',
+                                    style={"margin-left":"2vw"},
+                                    inputStyle = {"padding-right": "1vw"},
+                                ),
+                            ],
+                        ),
+                        dcc.Graph(id="TimeSeries",figure = vis.time_series_individual(neighbourhoods[0],feature,analysis),
+                        style={"width":"49vw","margin-left":"1vw"}),
+                    ]
+                )
+            ],
+        ),
+        
+        
+        # html.Div(
+        #     [dbc.Button(n.capitalize(),href="/"+n) for n in list_neighbours]+[html.Div(id='container-button-timestamp')]    
+        # ),
+        
     ])    
 
    
@@ -67,10 +116,3 @@ def Neighbourhoodpage(app,vis,group):
         ])
 
     return layout
-
-
-#vis.group_visualization_map("GONDOMAR","price")
-#vis.pie_by_group_visualization("PORTO")
-#vis.time_series_individual('Campanhã','price','mean')
-#vis.map_pie_hist_vizualization("GONDOMAR","price")
-

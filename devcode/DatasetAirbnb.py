@@ -47,6 +47,7 @@ class DatasetAirbnb:
         self.calendar.adjusted_price = list(map(lambda x: float(x[1:].replace(',', '') ), self.calendar.adjusted_price))
         self.calendar["yearmonth"] =  self.calendar.date.dt.to_period("M").astype(str)
         self.calendar = self.calendar.join(self.Airbnb_complete[["id","neighbourhood_group","neighbourhood","latitude","longitude"]].set_index('id'), on='listing_id')
+        self.calendar = self.calendar.groupby(["neighbourhood_group","neighbourhood","yearmonth"]).mean().reset_index()
         self.calendar.to_csv(self.path_to_folder+"/"+'calendar_final.csv', index=False,index_label=False)
     
     def _bathrooms(self,df):
@@ -118,6 +119,7 @@ class DatasetAirbnb:
         self.Airbnb_dropna = final_dataset_drop_na
 
     # Public
+    
     def importData(self,calendar = True):
         files = os.listdir(self.path_to_folder)
         

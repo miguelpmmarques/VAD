@@ -60,29 +60,7 @@ class VisualizationAirbnb:
         self.main_visualization_detailed = self.Airbnb_complete.groupby("neighbourhood").mean().reset_index()
 
 
-    def _main_visualization_map_code(self,feature,detailed=False):
-        if detailed:
-            to_plot_data = self.main_visualization_detailed
-        else:
-            to_plot_data = self.main_visualization
-            hover_data={'neighbourhood':False,                         
-            'neighbourhood_group':True, 
-            feature:':.2f', 
-            }
-        fig = px.choropleth_mapbox(to_plot_data, geojson=self.geojson_airbnb,
-                                color=feature,
-                                locations="neighbourhood", featureidkey="properties.neighbourhood",
-                                center={"lat": self.porto_view_lat, "lon": self.porto_view_lon},
-                                mapbox_style="carto-positron", zoom=self.porto_view_zoom,
-                                #hover_data=hover_data,
-                                color_continuous_scale = "OrRd",
-                                #title="Mean {} by neighbourhood group".format(feature.replace("_"," ").capitalize())
-                                )
-        fig.update_layout(
-            height = 900,
-        
-        )
-        return fig #fig.show()
+       
 
     def _group_visualization_map_code(self,neighbourhood_group_name,feature):
 
@@ -118,20 +96,7 @@ class VisualizationAirbnb:
                                 line=dict(color='#FFFFFF', width=5)))
         fig.show()
 
-    def _time_series_individual_code(self,neighbourhood,feature,analisys):
-        filtered_calendar = self.calendar[self.calendar["neighbourhood_group"]==neighbourhood]
-        if analisys == "mean":
-            to_plot = filtered_calendar.groupby(["yearmonth","neighbourhood_group"]).mean().reset_index()
-        if analisys == "min":
-            to_plot = filtered_calendar.groupby(["yearmonth","neighbourhood_group"]).min().reset_index()
-        large_rockwell_template = dict(
-            layout=go.Layout(title_font=dict(family="Rockwell", size=24))
-        )
-        fig = go.Figure([go.Scatter(x=to_plot['yearmonth'], y=to_plot[feature])])
-        fig.update_layout(title="{} - {} {} Analysis".format(neighbourhood,feature.capitalize(),analisys.capitalize()),
-                        template=large_rockwell_template)
-        print(self.calendar.columns)
-        return fig
+    # Public
 
     def map_vizualization(self,group,feature):
         
@@ -212,10 +177,32 @@ class VisualizationAirbnb:
 
 
     
-    # Public
 
     def main_visualization_map(self,feature,detailed=False):
-        return self._main_visualization_map_code(feature,detailed)
+
+        if detailed:
+            to_plot_data = self.main_visualization_detailed
+        else:
+            to_plot_data = self.main_visualization
+            hover_data={'neighbourhood':False,                         
+            'neighbourhood_group':True, 
+            feature:':.2f', 
+            }
+
+        fig = px.choropleth_mapbox(to_plot_data, geojson=self.geojson_airbnb,
+                                color=feature,
+                                locations="neighbourhood", featureidkey="properties.neighbourhood",
+                                center={"lat": self.porto_view_lat, "lon": self.porto_view_lon},
+                                mapbox_style="carto-positron", zoom=self.porto_view_zoom,
+                                #hover_data=hover_data,
+                                color_continuous_scale = "OrRd",
+                                #title="Mean {} by neighbourhood group".format(feature.replace("_"," ").capitalize())
+                                )
+        fig.update_layout(
+            height = 900,
+        
+        )
+        return fig 
 
     def main_visualization_list(self,feature,detailed=False):
        
@@ -249,9 +236,22 @@ class VisualizationAirbnb:
         return fig
     
     def time_series_individual(self,neighbourhood,feature,analisys):
-        return self._time_series_individual_code(neighbourhood,feature,analisys)
+        to_plot = self.calendar[self.calendar["neighbourhood"] == neighbourhood]
+
+        large_rockwell_template = dict(
+                layout=go.Layout(title_font=dict(family="Rockwell", size=24))
+            )
+
+        fig = go.Figure([go.Scatter(x=to_plot['yearmonth'], 
+                                    y=to_plot[feature],
+                                    marker_color="orange"
+                                )])
+        fig.update_layout(title="{} - {} Mean Analysis".format(neighbourhood,feature.capitalize()),
+                        template=large_rockwell_template)
+        
+        return fig
     
-    # Por testar
+    '''
     def group_visualization_map(self,neighbourhood_group_name,feature):
         self._group_visualization_map_code(neighbourhood_group_name,feature)
 
@@ -261,3 +261,4 @@ class VisualizationAirbnb:
 
     def map_pie_hist_vizualization(self,group,feature):
         self._map_pie_hist_vizualization_code(group,feature)
+    '''

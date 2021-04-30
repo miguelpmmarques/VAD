@@ -22,7 +22,7 @@ global list_neighbours
 
 ds = DatasetAirbnb("datasets")
 
-ds.importData(calendar = False)
+ds.importData(calendar = True)
 vis = VisualizationAirbnb(ds)
 
 
@@ -77,13 +77,14 @@ def change_group(group,feature):
 @app.callback(
     Output("Map", "figure"),
     Output("TimeSeries", "figure"),
-    Input("dropdownN", "value")
+    Input("dropdownN", "value"),
+    Input("dropdownNeigh", "value"),
 )
-def change_group(feature):
+def change_group(feature,neigh):
     global group_analyse
     print("Choice "+feature)
     analysis = "mean"
-    return vis.map_vizualization(group_analyse,feature),vis.time_series_individual(group_analyse,"price",analysis)
+    return vis.map_vizualization(group_analyse,feature),vis.time_series_individual(neigh,"price",analysis)
 
 # Home Callbacks
 
@@ -99,8 +100,6 @@ def change_feature(feature,detailed):
         return vis.main_visualization_map(feature),vis.main_visualization_list(feature)
     else:
         return vis.main_visualization_map(feature,True),vis.main_visualization_list(feature,True)
-
-
 
 
 if __name__ == '__main__':
