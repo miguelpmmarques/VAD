@@ -37,7 +37,7 @@ def Homepage(app,vis):
     
     feature = "price"
     features = ["price","minimum_nights","bathrooms","beds","accommodates","review_scores_rating"]
-
+    style_sizes = [1.2]
     btns_list = np.zeros((len(vis.all_neighbours)),dtype=int)
     list_neighbours = vis.all_neighbours
     count_neighbourhoods = vis.count_neighbourhoods
@@ -55,12 +55,12 @@ def Homepage(app,vis):
                         style={"border-radius":"25%","height": "4vw"}), 
                         dbc.CardBody([
                             html.P("{} Airbnbs".format(count_neighbourhoods[n])),
-                            html.P("{}%".format(count_neighbourhoods_percentage[n]),style={'fontWeight': 'bold'}),
+                            html.P("{}%".format(count_neighbourhoods_percentage[n]),style={'fontWeight': 'bold',"font-size":"{}vw".format(1.2-0.025*i)}),
                         ])
                     ],
                     className="card border-danger mb-3",
                     style={"margin-left":"1vw","width":"10vw","heigh":"10vw","border-radius":"15%"}
-                    ) for n in list_neighbours],
+                    ) for i,n in enumerate(list_neighbours)],
                 style={"max-width": "100vw","text-align":"center","display":"flex","flex-direction":"row"},
             ),],
             style = {"flex-direction":"row"}

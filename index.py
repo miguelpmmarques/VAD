@@ -60,6 +60,7 @@ def display_page(pathname):
 
 
 # Room type Callbacks
+
 @app.callback(
     Output("Pie", "figure"),
     Output("Hist", "figure"),
@@ -84,7 +85,7 @@ def change_group(feature,neigh):
     global group_analyse
     print("Choice "+feature)
     analysis = "mean"
-    return vis.map_vizualization(group_analyse,feature),vis.time_series_individual(neigh,"price",analysis)
+    return vis.map_vizualization(group_analyse,feature),vis.time_series_individual(neigh,"price",group_analyse)
 
 # Home Callbacks
 

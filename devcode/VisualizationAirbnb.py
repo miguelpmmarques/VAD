@@ -235,17 +235,25 @@ class VisualizationAirbnb:
                         template = large_rockwell_template)
         return fig
     
-    def time_series_individual(self,neighbourhood,feature,analisys):
+    def time_series_individual(self,neighbourhood,feature,group):
         to_plot = self.calendar[self.calendar["neighbourhood"] == neighbourhood]
-
+        to_plot_group = self.calendar.groupby(["neighbourhood_group","yearmonth"]).mean().reset_index()
+        to_plot_group = to_plot_group[to_plot_group["neighbourhood_group"]==group]
         large_rockwell_template = dict(
                 layout=go.Layout(title_font=dict(family="Rockwell", size=24))
             )
 
         fig = go.Figure([go.Scatter(x=to_plot['yearmonth'], 
                                     y=to_plot[feature],
-                                    marker_color="orange"
-                                )])
+                                    marker_color="orange",
+                                    name = neighbourhood
+                                ),
+                        go.Scatter(x=to_plot_group['yearmonth'], 
+                                    y=to_plot_group[feature],
+                                    marker_color="red",
+                                    name=group
+                                ), 
+                                ])
         fig.update_layout(title="{} - {} Mean Analysis".format(neighbourhood,feature.capitalize()),
                         template=large_rockwell_template)
         

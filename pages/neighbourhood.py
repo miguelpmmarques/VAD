@@ -91,7 +91,7 @@ def Neighbourhoodpage(app,vis,group):
                                 
                                     value='price',
                                     style={"margin-left":"2vw"},
-                                    inputStyle = {"padding-right": "1vw"},
+                                    labelStyle = {"padding-right": "1vw",},
                                 ),
                             ],
                         ),
