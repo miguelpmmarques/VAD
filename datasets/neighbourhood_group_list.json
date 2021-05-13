@@ -1,0 +1,13 @@
+[
+    {"name": "PORTO", "list_of_neighbors": ["Lordelo do Ouro e Massarelos", "Cedofeita, Ildefonso, S\u00e9, Miragaia, Nicolau, Vit\u00f3ria", "Bonfim", "Paranhos", "Ramalde", "Aldoar, Foz do Douro e Nevogilde", "Campanh\u00e3"], "lat": 41.16, "lon": -8.62, "zoom": 11}, 
+    {"name": "VILA NOVA DE GAIA", "list_of_neighbors": ["Mafamude e Vilar do Para\u00edso", "Canidelo", "Gulpilhares e Valadares", "Oliveira do Douro", "Madalena", "Santa Marinha e S\u00e3o Pedro da Afurada", "Avintes", "S\u00e3o F\u00e9lix da Marinha", "Sandim, Olival, Lever e Crestuma", "Arcozelo", "Serzedo e Perosinho", "Pedroso e Seixezelo", "Vilar de Andorinho", "Grij\u00f3 e Sermonde", "Canelas"], "lat": 41.08, "lon": -8.59, "zoom": 10.5}, 
+    {"name": "MATOSINHOS", "list_of_neighbors": ["S\u00e3o Mamede de Infesta e Senhora da Hora", "Matosinhos e Le\u00e7a da Palmeira", "Perafita, Lavra e Santa Cruz do Bispo", "Cust\u00f3ias, Le\u00e7a do Balio e Guif\u00f5es"], "lat": 41.21, "lon": -8.68, "zoom": 10.5}, 
+    {"name": "VILA DO CONDE", "list_of_neighbors": ["Fornelo e Vair\u00e3o", "Vila Ch\u00e3", "Mindelo", "\u00c1rvore", "Gi\u00e3o", "Macieira da Maia", "Labruge", "Vilar de Pinheiro", "Azurara", "Vila do Conde", "Vilar e Mosteir\u00f3", "Malta e Canidelo"], "lat": 41.35, "lon": -8.68, "zoom": 10.5}, 
+    {"name": "ESPINHO", "list_of_neighbors": ["Anta e Guetim", "Espinho", "Silvalde"], "lat": 41.0, "lon": -8.63, "zoom": 11.5}, 
+    {"name": "GONDOMAR", "list_of_neighbors": ["Gondomar (S\u00e3o Cosme), Valbom e Jovim", "Rio Tinto", "Foz do Sousa e Covelo", "F\u00e2nzeres e S\u00e3o Pedro da Cova", "Baguim do Monte (Rio Tinto)"], "lat": 41.10, "lon": -8.55, "zoom": 10}, 
+    {"name": "MAIA", "list_of_neighbors": ["S\u00e3o Pedro Fins", "Pedrou\u00e7os", "Cidade da Maia", "\u00c1guas Santas", "Cast\u00ealo da Maia", "Moreira", "Vila Nova da Telha", "Milheir\u00f3s", "Nogueira e Silva Escura"], "lat": 41.24, "lon": -8.62, "zoom": 10.5}, 
+    {"name": "SANTA MARIA DA FEIRA", "list_of_neighbors": ["Argoncilhe", "Fi\u00e3es", "Sanguedo", "Lourosa", "Caldas de S\u00e3o Jorge e de Pigeiros", "Mozelos", "Santa Maria de Lamas"], "lat": 40.97, "lon": -8.55, "zoom":10.5}, 
+    {"name": "SANTO TIRSO", "list_of_neighbors": ["\u00c1gua Longa"], "lat": 41.30, "lon": -8.47, "zoom": 10.5},
+    {"name": "VALONGO", "list_of_neighbors": ["Ermesinde", "Valongo", "Alfena"], "lat": 41.21, "lon": -8.55, "zoom": 10.5}, 
+    {"name": "TROFA", "list_of_neighbors": ["Muro", "Bougado (S\u00e3o Martinho e Santiago)", "Alvarelhos e Guid\u00f5es", "Coronado (S\u00e3o Rom\u00e3o e S\u00e3o Mamede)", "Covelas"], "lat": 41.31, "lon": -8.55, "zoom": 10.5}
+]

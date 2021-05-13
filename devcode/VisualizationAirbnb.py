@@ -116,8 +116,13 @@ class VisualizationAirbnb:
                                 mapbox_style="carto-positron", zoom=json_info["zoom"],
                                 color = feature,
                                 title="Mean Airbnb {} per Neighbourhood".format(feature)
+                                
                                 )
-        fig0.update_layout(font_family="Sans-serif",)
+        fig0.update_layout(
+            font_family="Sans-serif",
+            height = 700,
+            width = 900,
+        )
         return fig0
         
     def pie_vizualization(self,group,feature):
@@ -212,9 +217,11 @@ class VisualizationAirbnb:
                                 #hover_data=hover_data,
                                 color_continuous_scale = "OrRd",
                                 #title="Mean {} by neighbourhood group".format(feature.replace("_"," ").capitalize())
+                                
                                 )
         fig.update_layout(
-            height = 900,
+            height = 700,
+            width = 800,
             font_family="Sans-serif",
         
         )
@@ -286,9 +293,19 @@ class VisualizationAirbnb:
                                     name=group
                                 ), 
                                 ])
+        fig.update_layout(legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1
+        ))
         fig.update_layout(title="{} - {} Mean Analysis".format(neighbourhood,feature.capitalize()),
                         template=large_rockwell_template,
-                        title_font_family="Sans-serif")
+                        title_font_family="Sans-serif",
+                        height = 600,
+                        width = 900,
+                        )
         
         return fig
     
