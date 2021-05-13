@@ -94,6 +94,7 @@ def RoomTypepage(app,vis):
                 html.Div(
                     className="six columns",
                     children=html.Div(
+                        
                         dcc.Graph(id="Bar",figure = vis.bar_room_type_visualization(group,feature),
                         style={'width': '100vh', 'height': '40vh',"padding-left": "4vw"},
                         ),
