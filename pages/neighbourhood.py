@@ -95,18 +95,14 @@ def Neighbourhoodpage(app,vis,group):
                                 ),
                             ],
                         ),
-                        dcc.Graph(id="TimeSeries",figure = vis.time_series_individual(neighbourhoods[0],feature,analysis),
+                        dcc.Graph(id="TimeSeries",figure = vis.time_series_individual(neighbourhoods[0],feature,group),
                         style={"width":"49vw","margin-left":"1vw"}),
+                     
+                        
                     ]
                 )
             ],
         ),
-        
-        
-        # html.Div(
-        #     [dbc.Button(n.capitalize(),href="/"+n) for n in list_neighbours]+[html.Div(id='container-button-timestamp')]    
-        # ),
-        
     ])    
 
    

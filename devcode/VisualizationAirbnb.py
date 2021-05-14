@@ -120,7 +120,7 @@ class VisualizationAirbnb:
                                 )
         fig0.update_layout(
             font_family="Sans-serif",
-            height = 700,
+            height = 800,
             width = 900,
         )
         return fig0
@@ -148,8 +148,19 @@ class VisualizationAirbnb:
         )
         fig1.update_traces(marker=dict(colors=px.colors.sequential.RdBu,
                                 line=dict(color='#FFFFFF', width=5)))
-        fig1.update_layout(title_text="Room Types in {}".format(group),
-                    font_family="Sans-serif",)
+        fig1.update_layout(title_text="Room Types Distribution",
+                    font_family="Sans-serif",
+                    height = 900,
+                    width = 800,
+                    )
+       
+        fig1.update_layout(legend=dict(
+            orientation="h",
+            yanchor="top",
+            y=1.0,
+            xanchor="left",
+            x=0
+           ))
         return fig1
 
       
@@ -186,12 +197,19 @@ class VisualizationAirbnb:
                 layout=go.Layout(title_font=dict(family="Rockwell", size=24))
         )
         fig2.update_layout(barmode='group', 
-            title_text="Mean beds, bathrooms and accommodates per Room Types in {}".format(group),
+            title_text="Mean beds, bathrooms and accommodates per Room Types",
             template = large_rockwell_template,
             font_family="Sans-serif",
             title_font_family="Sans-serif",
             title_font_size=18,
             )
+        fig2.update_layout(legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=-0.2,
+            xanchor="right",
+            x=1),
+            height=420,)
         return fig2
  
 
@@ -248,6 +266,9 @@ class VisualizationAirbnb:
                         )
         return fig
 
+
+    
+
     def bar_room_type_visualization(self,group,feature):
         large_rockwell_template = dict(layout=go.Layout(title_font=dict(family="Rockwell", size=24)))
         to_pie = self.Airbnb_complete[self.Airbnb_complete["neighbourhood_group"] == group].groupby(["room_type"]).mean().reset_index()
@@ -266,12 +287,12 @@ class VisualizationAirbnb:
                     )]
                 )
         # Customize aspect
-        fig.update_traces(marker_color='rgb(233,84,32)', marker_line_color='rgb(255,0,0)',
-                        marker_line_width=3, opacity=0.7)
-        fig.update_layout(title_text='Room Type mean {} in {}'.format(feature.replace("_"," ").capitalize(),group),
+        fig.update_traces(marker_color='rgb(233,84,32)', opacity=0.7)
+        fig.update_layout(title_text='Room Type mean {}'.format(feature.replace("_"," ").capitalize()),
                         template = large_rockwell_template,
                         title_font_family="Sans-serif",
                         )
+        
         return fig
     
     def time_series_individual(self,neighbourhood,feature,group):
@@ -281,42 +302,57 @@ class VisualizationAirbnb:
         large_rockwell_template = dict(
                 layout=go.Layout(title_font=dict(family="Rockwell", size=24))
             )
+        fig_sub = make_subplots(rows=2, cols=1,
+            row_heights=[0.7, 0.3],
+            vertical_spacing = 0.01,
+            shared_xaxes=True)
 
-        fig = go.Figure([go.Scatter(x=to_plot['yearmonth'], 
+
+        fig_sub.add_trace(go.Scatter(x=to_plot_group['yearmonth'], 
                                     y=to_plot[feature],
                                     marker_color="orange",
-                                    name = neighbourhood
-                                ),
-                        go.Scatter(x=to_plot_group['yearmonth'], 
+                                    name=neighbourhood
+                                ),row=1, col=1)
+
+        fig_sub.add_trace(go.Scatter(x=to_plot_group['yearmonth'], 
                                     y=to_plot_group[feature],
                                     marker_color="red",
                                     name=group
-                                ), 
-                                ])
-        fig.update_layout(legend=dict(
+                                ), row=1, col=1)
+
+        stonks_plots = np.array([to_plot[feature],to_plot_group[feature]])
+        print(stonks_plots)
+
+        fig_sub.add_trace(go.Candlestick(x=to_plot['yearmonth'],
+                        open=to_plot_group[feature], high=stonks_plots.max(axis=0),
+                        low=stonks_plots.min(axis=0), close=to_plot[feature],
+                        increasing_line_color= 'orange', decreasing_line_color= 'red',
+                        hoverinfo='skip',
+                        ),    
+                        row=2, col=1)
+
+
+        fig_sub.update_layout(legend=dict(
             orientation="h",
             yanchor="bottom",
             y=1.02,
             xanchor="right",
             x=1
         ))
-        fig.update_layout(title="{} - {} Mean Analysis".format(neighbourhood,feature.capitalize()),
+        fig_sub.update_layout(title="{} - {} Mean Analysis".format(neighbourhood,feature.capitalize()),
                         template=large_rockwell_template,
                         title_font_family="Sans-serif",
-                        height = 600,
+                        height = 750,
                         width = 900,
+                        
                         )
+        fig_sub.update_xaxes(rangeslider_visible=False)
         
-        return fig
-    
-    '''
-    def group_visualization_map(self,neighbourhood_group_name,feature):
-        self._group_visualization_map_code(neighbourhood_group_name,feature)
-
-    def pie_by_group_visualization(self,group):
-        self._pie_by_group_visualization_code(group)
+        return fig_sub
 
 
-    def map_pie_hist_vizualization(self,group,feature):
-        self._map_pie_hist_vizualization_code(group,feature)
-    '''
+
+
+
+
+

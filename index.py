@@ -65,13 +65,14 @@ def display_page(pathname):
     Output("Pie", "figure"),
     Output("Hist", "figure"),
     Output("Bar", "figure"),
+    Output("title", "children"),
     Input("dropdownRT", "value"),
     Input("radio_items_room_type", "value"),
     
 )
 def change_group(group,feature):
     print("Choice "+group)
-    return vis.pie_vizualization(group,feature),vis.hist_vizualization(group,feature),vis.bar_room_type_visualization(group,feature)
+    return vis.pie_vizualization(group,feature),vis.hist_vizualization(group,feature),vis.bar_room_type_visualization(group,feature),"Room Type Analysis in {}".format(group)
 
 # Neighbourhood Callbacks
 

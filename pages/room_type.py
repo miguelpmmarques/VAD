@@ -40,11 +40,14 @@ def RoomTypepage(app,vis):
     group = "PORTO"
     list_neighbours = vis.all_neighbours
     ''' DASH '''
-    #app = dash.Dash(__name__, external_stylesheets = [dbc.themes.UNITED])
+
     feature_list = ["price","minimum_nights","number_of_reviews","review_scores_rating"]
 
     body = html.Div([
-        html.H1("Room Type Analysis"),
+        html.H1(id = "title",
+            children=["Room Type Analysis in {}".format(group)]),
+        html.Div([
+        html.P("Choose Group:",style={"margin-left":"1vw"}),
         dcc.Dropdown(
             id="dropdownRT",
             options=[
@@ -52,8 +55,10 @@ def RoomTypepage(app,vis):
             ],
         value=group,
         clearable=False,
-        style={"max-width":"20vw","margin-left":"1vw"},
+        style={"width":"20vw","margin-left":"1vw"},
         ),
+
+        ],className="row",),
         html.Div(
             className="row",
             children=[
@@ -62,7 +67,33 @@ def RoomTypepage(app,vis):
                     children=[
                         html.Div(
                             children=dcc.Graph(id="Hist",figure = vis.hist_vizualization(group,feature))
-                        )
+                        ),
+                        
+                        html.Div(
+                            className="row",
+                            children=[
+                                html.P("Features:",style={"margin-left":"2vw","font-weight": "bold"}),
+                                dcc.RadioItems(
+                                    id = 'radio_items_room_type',
+                                    options=
+                                        [{"label":f.replace("_"," ").capitalize(),"value":f} for f in feature_list],
+                                
+                                    value='price',
+                                    labelStyle = {'cursor': 'pointer', 'margin-left':'20px'},
+                                    #style={"margin-left":"2vw"}
+                                ),
+                            ]
+                        ),
+                        html.Div(
+                            className="six columns",
+                            children=html.Div(
+                                
+                                dcc.Graph(id="Bar",figure = vis.bar_room_type_visualization(group,feature),
+                                style={'width': '100vh', 'height': '40vh',"padding-left": "4vw"},
+                                ),
+
+                            )
+                        ),
                     ]
                 ),
                 html.Div(
@@ -73,39 +104,7 @@ def RoomTypepage(app,vis):
                 )
             ]
         ),
-        html.Div(
-            className="row",
-            children=[
-                html.Div(
-                    className="six columns",
-                    children=[
-
-                        html.H5("Features",style={"margin-left":"2vw","font-weight": "bold"}),
-                        dcc.RadioItems(
-                            id = 'radio_items_room_type',
-                            options=
-                                [{"label":f.replace("_"," ").capitalize(),"value":f} for f in feature_list],
-                        
-                            value='price',
-                            style={"margin-left":"2vw","display":"inline-grid","padding":"1vw"}
-                        ),
-                    ]
-                ),
-                html.Div(
-                    className="six columns",
-                    children=html.Div(
-                        
-                        dcc.Graph(id="Bar",figure = vis.bar_room_type_visualization(group,feature),
-                        style={'width': '100vh', 'height': '40vh',"padding-left": "4vw"},
-                        ),
-
-                    )
-                )
-            ]
-        ),
-        
-        #dcc.Graph(id="Hist",figure = vis.hist_vizualization(group,feature)),
-    ])    
+    ],style={"margin-left":"1vw"})    
 
    
     layout = html.Div([
@@ -116,10 +115,3 @@ def RoomTypepage(app,vis):
    
 
     return layout
-
-
-#vis.group_visualization_map("GONDOMAR","price")
-#vis.pie_by_group_visualization("PORTO")
-#vis.time_series_individual('Campanhã','price','mean')
-#vis.map_pie_hist_vizualization("GONDOMAR","price")
-
