@@ -80,21 +80,21 @@ def Neighbourhoodpage(app,vis,group):
                             style={"max-width":"30vw","margin-left":"1vw"},
                         ),
                         html.Br(),
-                        html.Div(
-                            className="row",
-                            children=[
-                                html.P("Features",style={"margin-left":"2vw","font-weight": "bold"}),
-                                dcc.RadioItems(
-                                    id = 'radio_items_room_type',
-                                    options=
-                                        [{"label":f.replace("_"," ").capitalize(),"value":f} for f in feature_list],
-                                
-                                    value='price',
-                                    style={"margin-left":"2vw"},
-                                    labelStyle = {"padding-right": "1vw",},
-                                ),
-                            ],
-                        ),
+                        # html.Div(
+                        #     className="row",
+                        #     children=[
+                        #         html.P("Features",style={"margin-left":"2vw","font-weight": "bold"}),
+                        #         dcc.RadioItems(
+                        #             id = 'radio_items_room_type',
+                        #             options=
+                        #                 [{"label":f.replace("_"," ").capitalize(),"value":f} for f in feature_list],
+                        #         
+                        #             value='price',
+                        #             style={"margin-left":"2vw"},
+                        #             labelStyle = {"padding-right": "1vw",},
+                        #         ),
+                        #     ],
+                        # ),
                         dcc.Graph(id="TimeSeries",figure = vis.time_series_individual(neighbourhoods[0],feature,group),
                         style={"width":"49vw","margin-left":"1vw"}),
                      

@@ -115,13 +115,24 @@ class VisualizationAirbnb:
                                 hover_data = ["Number of Airbnbs"],
                                 mapbox_style="carto-positron", zoom=json_info["zoom"],
                                 color = feature,
-                                title="Mean Airbnb {} per Neighbourhood".format(feature)
-                                
+                                title="Mean Airbnb {} per Neighbourhood".format(feature),
+                                #hover_data=['text']
+                                #hovertemplate =
+                                #"<b>%{locations} </b><br><br>" +
+                                #"Number of Airbnbs: %{hover_data}<br>" ,
                                 )
         fig0.update_layout(
             font_family="Sans-serif",
             height = 800,
             width = 900,
+            
+            title_font=dict(
+                            family="Sans-serif",
+                            size=18,
+                            color="black"
+                        ),
+                        title_xanchor= "center",
+                        title_x= 0.5,
         )
         return fig0
         
@@ -152,6 +163,13 @@ class VisualizationAirbnb:
                     font_family="Sans-serif",
                     height = 900,
                     width = 800,
+                    title_font=dict(
+                            family="Sans-serif",
+                            size=18,
+                            color="black"
+                        ),
+                        title_xanchor= "center",
+                        title_x= 0.5,
                     )
        
         fig1.update_layout(legend=dict(
@@ -194,14 +212,19 @@ class VisualizationAirbnb:
             marker_color=px.colors.sequential.Oranges[6]
         ))
         large_rockwell_template = dict(
-                layout=go.Layout(title_font=dict(family="Rockwell", size=24))
+                layout=go.Layout(title_font=dict(family="Sans-serif", size=18))
         )
         fig2.update_layout(barmode='group', 
             title_text="Mean beds, bathrooms and accommodates per Room Types",
             template = large_rockwell_template,
             font_family="Sans-serif",
-            title_font_family="Sans-serif",
-            title_font_size=18,
+            title_font=dict(
+                            family="Sans-serif",
+                            size=18,
+                            color="black"
+                        ),
+                        title_xanchor= "center",
+                        title_x= 0.5,
             )
         fig2.update_layout(legend=dict(
             orientation="h",
@@ -270,7 +293,7 @@ class VisualizationAirbnb:
     
 
     def bar_room_type_visualization(self,group,feature):
-        large_rockwell_template = dict(layout=go.Layout(title_font=dict(family="Rockwell", size=24)))
+        large_rockwell_template = dict(layout=go.Layout(title_font=dict(family="Sans-serif", size=18)))
         to_pie = self.Airbnb_complete[self.Airbnb_complete["neighbourhood_group"] == group].groupby(["room_type"]).mean().reset_index()
 
         fig = go.Figure(
@@ -290,17 +313,30 @@ class VisualizationAirbnb:
         fig.update_traces(marker_color='rgb(233,84,32)', opacity=0.7)
         fig.update_layout(title_text='Room Type mean {}'.format(feature.replace("_"," ").capitalize()),
                         template = large_rockwell_template,
-                        title_font_family="Sans-serif",
-                        )
+                        title_font=dict(
+                            family="Sans-serif",
+                            size=18,
+                            color="black",
+                        ),
+                        title_xanchor= "center"
+                    )
+                        
         
         return fig
     
     def time_series_individual(self,neighbourhood,feature,group):
+        
+        def buldLabel(x):
+            if x[0]>x[1]:
+                return "<b>Neighbourhood</b> Mean<br>Price is higher by <b>{}€</b>".format(round(x[0]-x[1],2))
+            return "<b>Porto</b> Mean Price <br>is higher by <b>{}€</b>".format(round(x[1]-x[0],2))
+
+        
         to_plot = self.calendar[self.calendar["neighbourhood"] == neighbourhood]
         to_plot_group = self.calendar.groupby(["neighbourhood_group","yearmonth"]).mean().reset_index()
         to_plot_group = to_plot_group[to_plot_group["neighbourhood_group"]==group]
         large_rockwell_template = dict(
-                layout=go.Layout(title_font=dict(family="Rockwell", size=24))
+                layout=go.Layout(title_font=dict(family="Sans-serif", size=18))
             )
         fig_sub = make_subplots(rows=2, cols=1,
             row_heights=[0.7, 0.3],
@@ -327,7 +363,8 @@ class VisualizationAirbnb:
                         open=to_plot_group[feature], high=stonks_plots.max(axis=0),
                         low=stonks_plots.min(axis=0), close=to_plot[feature],
                         increasing_line_color= 'orange', decreasing_line_color= 'red',
-                        hoverinfo='skip',
+                        text = list(map(lambda x: buldLabel(x), stonks_plots.T)), 
+                        hoverinfo = "text",
                         ),    
                         row=2, col=1)
 
@@ -341,9 +378,14 @@ class VisualizationAirbnb:
         ))
         fig_sub.update_layout(title="{} - {} Mean Analysis".format(neighbourhood,feature.capitalize()),
                         template=large_rockwell_template,
-                        title_font_family="Sans-serif",
                         height = 750,
                         width = 900,
+                        title_font=dict(
+                            family="Sans-serif",
+                            size=18,
+                            color="black"
+                        ),
+                        title_xanchor= "center"
                         
                         )
         fig_sub.update_xaxes(rangeslider_visible=False)

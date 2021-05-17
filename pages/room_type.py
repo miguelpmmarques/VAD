@@ -47,7 +47,7 @@ def RoomTypepage(app,vis):
         html.H1(id = "title",
             children=["Room Type Analysis in {}".format(group)]),
         html.Div([
-        html.P("Choose Group:",style={"margin-left":"1vw"}),
+        html.P("Choose Group:",style={"margin-left":"1vw","font-weight": "bold"}),
         dcc.Dropdown(
             id="dropdownRT",
             options=[
@@ -68,6 +68,7 @@ def RoomTypepage(app,vis):
                         html.Div(
                             children=dcc.Graph(id="Hist",figure = vis.hist_vizualization(group,feature))
                         ),
+                        html.Br(),
                         
                         html.Div(
                             className="row",
